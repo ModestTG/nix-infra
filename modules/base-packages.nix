@@ -1,0 +1,54 @@
+{ ... }:
+{
+  flake.modules.nixos.basePackages =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = with pkgs; [
+        age
+        bash
+        bc
+        coreutils
+        curl
+        dig
+        dix
+        doas
+        exiftool
+        exiv2
+        ffmpeg
+        file
+        findutils
+        fzf
+        gcc
+        git
+        jq
+        just
+        lsof
+        ncdu
+        nh
+        nix-ld
+        nix-output-monitor
+        nix-tree
+        nmap
+        nurl
+        p7zip
+        pciutils
+        pfetch
+        pre-commit
+        pwgen
+        sops
+        teamspeak6-client
+        terminator
+        tldr
+        tmux
+        tree
+        unrar
+        unzip
+        usbutils
+        vim
+        wget
+        yq
+        zip
+        zstd
+      ];
+    };
+}
