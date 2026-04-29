@@ -15,6 +15,7 @@ in
 {
   # Create keys using `agenix -e <secretName>` from this folder
   "cf-dns-api-token.age".publicKeys = keyList;
+  "deploy-ssh-private-key.age".publicKeys = keyList;
   "eweishaar-ssh-private-key.age".publicKeys = keyList;
   "gatus-ntfy-token.age".publicKeys = keyList;
   "kaladesh-ssh-privateKey.age".publicKeys = keyList;

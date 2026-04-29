@@ -1,11 +1,15 @@
 { self, inputs, ... }:
 {
   flake.modules.homeManager.ssh =
-    { config, ... }:
+    { config, osConfig, ... }:
     {
       imports = [ inputs.agenix.homeManagerModules.default ];
-      age.secrets.vps-ssh = {
-        file = builtins.toPath "${self.outPath}/secrets/vps-ssh.age";
+      age = {
+        identityPaths = [ osConfig.age.secrets.eweishaar-ssh-private-key.path ];
+        secrets = {
+          vps-ssh.file = builtins.toPath "${self.outPath}/secrets/vps-ssh.age";
+          deploy-ssh-private-key.file = builtins.toPath "${self.outPath}/secrets/deploy-ssh-private-key.age";
+        };
       };
       programs.ssh = {
         enable = true;
@@ -13,6 +17,18 @@
           "kaladesh" = {
             hostname = "10.0.20.22";
             user = "eweishaar";
+            identitiesOnly = true;
+          };
+          "kaladesh-deploy" = {
+            hostname = "10.0.20.22";
+            user = "deploy";
+            identityFile = config.age.secrets.deploy-ssh-private-key.path;
+            identitiesOnly = true;
+          };
+          "vryn" = {
+            user = "deploy";
+            identityFile = config.age.secrets.deploy-ssh-private-key.path;
+            identitiesOnly = true;
           };
         };
         extraOptionOverrides = {

@@ -1,13 +1,14 @@
 { ... }:
 {
   flake.modules.nixos.users-deploy =
-    { ... }:
+    { config, ... }:
     {
       users.users.deploy = {
         isNormalUser = true;
         extraGroups = [
           "wheel"
         ];
+        openssh.authorizedKeys.keys = [ config.systemConstants.deployPublicSshKey ];
       };
       security.sudo = {
         keepTerminfo = true;

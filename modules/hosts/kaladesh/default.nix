@@ -2,7 +2,7 @@
 {
   flake.colmena.kaladesh = {
     deployment = {
-      targetHost = "kaladesh";
+      targetHost = "kaladesh-deploy";
       targetUser = "deploy";
       tags = [ "server" ];
       buildOnTarget = true;
