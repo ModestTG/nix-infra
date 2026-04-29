@@ -3,10 +3,10 @@
     { pkgs, ... }:
     let
       pname = "spotiflac";
-      version = "v7.1.0";
+      version = "v7.1.6";
       src = builtins.fetchurl {
         url = "https://github.com/afkarxyz/SpotiFLAC/releases/download/${version}/SpotiFLAC.AppImage";
-        sha256 = "0cfk8y0hvl6sgsfd1d4rdql8an6kskxs13f69yf956hpfs0lhb9g";
+        sha256 = "1zd8sb1gmcbiy3a472a6as8fb2r7vszx0qvgzksqc7fxbb7w6axg";
       };
       appImageContents = pkgs.appimageTools.extract { inherit pname version src; };
     in
