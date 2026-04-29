@@ -10,7 +10,7 @@
           ntp
           users-eweishaar
         ]
-        ++ [ self.modules.generic.systemConstants ];
+        ++ [ self.modules.generic.systemConstants self.modules.generic.homeLab ];
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
       users.mutableUsers = false;

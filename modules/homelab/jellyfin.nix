@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-jellyfin =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.jellyfin = {
         enable = true;
@@ -9,14 +9,8 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."jellyfin.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "jellyfin.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:8096";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."jellyfin.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = 8096;
       };
       services.restic.backups.jellyfin = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/jellyfin";

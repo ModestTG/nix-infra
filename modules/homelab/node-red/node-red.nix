@@ -2,7 +2,7 @@
 
 {
   flake.modules.nixos.homelab-node-red =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.node-red = {
         enable = true;
@@ -10,13 +10,9 @@
         withNpmAndGcc = true;
         configFile = ./settings.js;
       };
-      services.nginx.virtualHosts."node-red.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "node-red.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.node-red.port}";
-        };
+      services.nginx.virtualHosts."node-red.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.node-red.port;
+        websockets = false;
       };
       services.restic.backups.node-red = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/node-red";

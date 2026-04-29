@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-sabnzbd =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.sabnzbd = {
         enable = true;
@@ -9,14 +9,8 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "sabnzbd.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:8081";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = 8081;
       };
       services.restic.backups.sabnzbd = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/sabnzbd";

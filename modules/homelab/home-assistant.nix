@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-home-assistant =
-    { config, ... }:
+    { config, homeLab, ... }:
     {
       virtualisation.oci-containers.containers.home-assistant = {
         hostname = "home-assistant";
@@ -12,14 +12,8 @@
         ];
         extraOptions = [ "--network=host" ];
       };
-      services.nginx.virtualHosts."hass.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "hass.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:8123";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."hass.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = 8123;
       };
       services.restic.backups.home-assistant = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/home-assistant";

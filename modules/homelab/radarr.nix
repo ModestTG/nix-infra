@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-radarr =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.radarr = {
         enable = true;
@@ -14,14 +14,8 @@
           };
         };
       };
-      services.nginx.virtualHosts."radarr.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "radarr.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.radarr.settings.server.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."radarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.radarr.settings.server.port;
       };
       services.restic.backups.radarr = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/radarr";

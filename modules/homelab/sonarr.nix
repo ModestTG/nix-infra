@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-sonarr =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.sonarr = {
         enable = true;
@@ -9,14 +9,8 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."sonarr.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "sonarr.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.sonarr.settings.server.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."sonarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.sonarr.settings.server.port;
       };
       services.restic.backups.sonarr = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/sonarr";

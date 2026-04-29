@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-paperless-ngx =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
 
     {
       age.secrets.paperless-ngx-admin-password = {
@@ -20,14 +20,8 @@
           PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ correspondent }}/{{ title }}";
         };
       };
-      services.nginx.virtualHosts."docs.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "docs.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.paperless.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."docs.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.paperless.port;
       };
       services.restic.backups.paperless-ngx = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/paperless-ngx";

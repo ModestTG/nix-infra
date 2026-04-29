@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-ntfy =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, lib, pkgs-unstable, ... }:
 
     {
       age.secrets.ntfy-settings = {
@@ -23,14 +23,10 @@
           cache-duration = "8760h"; # one year
         };
       };
-      services.nginx.virtualHosts."ntfy.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "ntfy.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost${config.services.ntfy-sh.settings.listen-http}";
-          proxyWebsockets = true;
-        };
-      };
+      services.nginx.virtualHosts."ntfy.ewhomelab.com" =
+        let
+          ntfyPort = lib.strings.removePrefix ":" config.services.ntfy-sh.settings.listen-http;
+        in
+        homeLab.mkProxyVirtualHost { port = ntfyPort; };
     };
 }

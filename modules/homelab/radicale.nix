@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-radicale =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
 
     {
       age.secrets = {
@@ -28,14 +28,8 @@
           };
         };
       };
-      services.nginx.virtualHosts."radicale.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "radicale.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:5232";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."radicale.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = 5232;
       };
       services.restic.backups.radicale = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/radicale";

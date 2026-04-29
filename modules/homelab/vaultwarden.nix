@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-vaultwarden =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
 
     {
       age.secrets.vaultwarden-admin-token = {
@@ -24,14 +24,8 @@
         };
         environmentFile = config.age.secrets.vaultwarden-admin-token.path;
       };
-      services.nginx.virtualHosts."vault.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "vault.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.vaultwarden.config.ROCKET_PORT}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."vault.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.vaultwarden.config.ROCKET_PORT;
       };
     };
 }

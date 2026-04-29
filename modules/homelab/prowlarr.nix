@@ -1,20 +1,14 @@
 { ... }:
 {
   flake.modules.nixos.homelab-prowlarr =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.prowlarr = {
         enable = true;
         package = pkgs-unstable.prowlarr;
       };
-      services.nginx.virtualHosts."prowlarr.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "prowlarr.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."prowlarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.prowlarr.settings.server.port;
       };
     };
 }

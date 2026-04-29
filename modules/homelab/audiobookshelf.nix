@@ -2,7 +2,7 @@
 
 {
   flake.modules.nixos.homelab-audiobookshelf =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.audiobookshelf = {
         enable = true;
@@ -12,17 +12,11 @@
         port = 8003;
         host = "0.0.0.0";
       };
-      services.nginx.virtualHosts."audiobookshelf.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "audiobookshelf.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.audiobookshelf.port}";
-          proxyWebsockets = true;
-          extraConfig = ''
-            client_max_body_size 5000M;
-          '';
-        };
+      services.nginx.virtualHosts."audiobookshelf.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.audiobookshelf.port;
+        extraConfig = ''
+          client_max_body_size 5000M;
+        '';
       };
       services.restic.backups.audiobookshelf = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/audiobookshelf";

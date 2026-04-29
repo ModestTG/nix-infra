@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-gatus =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
 
     {
       age.secrets.gatus-ntfy-token.file = builtins.toPath "${self.outPath}/secrets/gatus-ntfy-token.age";
@@ -13,14 +13,8 @@
           web.port = 8083;
         };
       };
-      services.nginx.virtualHosts."gatus.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "gatus.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.gatus.settings.web.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."gatus.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.gatus.settings.web.port;
       };
     };
 }

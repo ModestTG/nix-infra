@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.nixos.homelab-mealie =
-    { config, pkgs-unstable, ... }:
+    { config, homeLab, pkgs-unstable, ... }:
     {
       services.mealie = {
         enable = true;
@@ -10,14 +10,8 @@
           BASE_URL = "recipes.ewhomelab.com";
         };
       };
-      services.nginx.virtualHosts."recipes.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "recipes.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.mealie.port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."recipes.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.mealie.port;
       };
       services.restic.backups.mealie = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/mealie";

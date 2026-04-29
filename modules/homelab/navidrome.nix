@@ -3,6 +3,7 @@
   flake.modules.nixos.homelab-navidrome =
     {
       config,
+      homeLab,
       lib,
       pkgs-unstable,
       ...
@@ -22,14 +23,8 @@
       };
       users.users.navidrome.extraGroups = [ "users" ];
       systemd.services.navidrome.serviceConfig.MemoryDenyWriteExecute = lib.mkForce false;
-      services.nginx.virtualHosts."navidrome.ewhomelab.com" = {
-        forceSSL = true;
-        serverName = "navidrome.ewhomelab.com";
-        useACMEHost = "ewhomelab.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.navidrome.settings.Port}";
-          proxyWebsockets = true;
-        };
+      services.nginx.virtualHosts."navidrome.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+        port = config.services.navidrome.settings.Port;
       };
       services.restic.backups.navidrome = {
         repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/navidrome";
