@@ -25,16 +25,10 @@
       services.nginx.virtualHosts."navidrome.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.navidrome.settings.Port;
       };
-      services.restic.backups.navidrome = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/navidrome";
+      services.restic.backups.navidrome = ewhs.lib.mkResticBackup {
+        name = "navidrome";
         paths = [ "/var/lib/navidrome" ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

@@ -14,16 +14,10 @@
         port = config.services.node-red.port;
         websockets = false;
       };
-      services.restic.backups.node-red = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/node-red";
+      services.restic.backups.node-red = ewhs.lib.mkResticBackup {
+        name = "node-red";
         paths = [ config.services.node-red.userDir ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

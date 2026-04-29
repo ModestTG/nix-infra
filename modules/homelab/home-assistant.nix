@@ -15,16 +15,10 @@
       services.nginx.virtualHosts."hass.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8123;
       };
-      services.restic.backups.home-assistant = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/home-assistant";
+      services.restic.backups.home-assistant = ewhs.lib.mkResticBackup {
+        name = "home-assistant";
         paths = [ "/var/lib/home-assistant" ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
       system.activationScripts.home-assistant-dir =
         #bash

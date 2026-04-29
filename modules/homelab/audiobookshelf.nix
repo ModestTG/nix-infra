@@ -1,4 +1,4 @@
-{ self, ewhs, ... }:
+{ ewhs, ... }:
 
 {
   flake.modules.nixos.homelab-audiobookshelf =
@@ -18,16 +18,10 @@
           client_max_body_size 5000M;
         '';
       };
-      services.restic.backups.audiobookshelf = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/audiobookshelf";
+      services.restic.backups.audiobookshelf = ewhs.lib.mkResticBackup {
+        name = "audiobookshelf";
         paths = [ "/var/lib/${config.services.audiobookshelf.dataDir}" ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
       services.gatus.settings.endpoints = [
         {

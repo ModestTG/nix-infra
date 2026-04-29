@@ -23,16 +23,10 @@
       services.nginx.virtualHosts."docs.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.paperless.port;
       };
-      services.restic.backups.paperless-ngx = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/paperless-ngx";
+      services.restic.backups.paperless-ngx = ewhs.lib.mkResticBackup {
+        name = "paperless-ngx";
         paths = [ config.services.paperless.dataDir ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

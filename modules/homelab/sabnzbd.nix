@@ -12,16 +12,10 @@
       services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8081;
       };
-      services.restic.backups.sabnzbd = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/sabnzbd";
+      services.restic.backups.sabnzbd = ewhs.lib.mkResticBackup {
+        name = "sabnzbd";
         paths = [ config.services.sabnzbd.configFile ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
       system.activationScripts.media-folder =
         #bash

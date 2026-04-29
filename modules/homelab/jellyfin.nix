@@ -12,16 +12,10 @@
       services.nginx.virtualHosts."jellyfin.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8096;
       };
-      services.restic.backups.jellyfin = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/jellyfin";
+      services.restic.backups.jellyfin = ewhs.lib.mkResticBackup {
+        name = "jellyfin";
         paths = [ config.services.jellyfin.dataDir ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

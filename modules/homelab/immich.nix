@@ -17,16 +17,10 @@
           client_max_body_size 1000M;
         '';
       };
-      services.restic.backups.immich-postgresql = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/immich-postgresql";
+      services.restic.backups.immich-postgresql = ewhs.lib.mkResticBackup {
+        name = "immich-postgresql";
         paths = [ "/var/lib/immich-postgresql" ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

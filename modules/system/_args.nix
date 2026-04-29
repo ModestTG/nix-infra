@@ -1,4 +1,4 @@
-{
+rec {
   const = {
     eweishaarSshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIElkoT9GhRczgqRRpdC4gfw/z1eShyqto4AKQnk3nka6";
     deploySshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINexaBnm9WRlQ2Kb2xq6m9Z0ekUsTz1nxWxDHjn/0MgC";
@@ -20,6 +20,23 @@
     };
   };
   lib = {
+    mkResticBackup =
+      {
+        name,
+        paths,
+        passwordFile,
+        nasIP ? const.nasIP,
+        pruneOpts ? [
+          "--keep-daily 14"
+          "--keep-monthly 6"
+          "--keep-yearly 1"
+        ],
+      }:
+      {
+        repository = "sftp:root@${nasIP}:/mnt/AuxPool/K8S-NFS/backups/${name}";
+        inherit paths passwordFile pruneOpts;
+        initialize = true;
+      };
     mkProxyVirtualHost =
       {
         port,

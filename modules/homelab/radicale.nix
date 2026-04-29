@@ -31,16 +31,10 @@
       services.nginx.virtualHosts."radicale.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 5232;
       };
-      services.restic.backups.radicale = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/radicale";
+      services.restic.backups.radicale = ewhs.lib.mkResticBackup {
+        name = "radicale";
         paths = [ config.services.radicale.settings.storage.filesystem_folder ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }

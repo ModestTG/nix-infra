@@ -12,16 +12,10 @@
       services.nginx.virtualHosts."sonarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.sonarr.settings.server.port;
       };
-      services.restic.backups.sonarr = {
-        repository = "sftp:root@10.0.0.8:/mnt/AuxPool/K8S-NFS/backups/sonarr";
+      services.restic.backups.sonarr = ewhs.lib.mkResticBackup {
+        name = "sonarr";
         paths = [ config.services.sonarr.dataDir ];
         passwordFile = config.age.secrets.restic-password.path;
-        initialize = true;
-        pruneOpts = [
-          "--keep-daily 14"
-          "--keep-monthly 6"
-          "--keep-yearly 1"
-        ];
       };
     };
 }
