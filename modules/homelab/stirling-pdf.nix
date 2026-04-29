@@ -1,13 +1,13 @@
-{ ... }:
+{ ewhs, ... }:
 {
   flake.modules.nixos.homelab-stirling-pdf =
-    { homeLab, pkgs-unstable, ... }:
+    { pkgs-unstable, ... }:
     {
       services.stirling-pdf = {
         enable = true;
         package = pkgs-unstable.stirling-pdf;
       };
-      services.nginx.virtualHosts."pdf.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."pdf.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8080;
       };
     };

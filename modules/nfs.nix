@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ewhs, self, ... }:
 
 {
   flake.modules.nixos.nfsAll =
@@ -18,11 +18,11 @@
       boot.supportedFilesystems = [ "nfs" ];
     };
   flake.modules.nixos.nfsMedia =
-    { config, ... }:
+    { ... }:
     {
       imports = [ self.modules.nixos.nfsBase ];
       fileSystems."/mnt/plexpool" = {
-        device = "${config.systemConstants.nasIP}:/mnt/PlexPool";
+        device = "${ewhs.const.nasIP}:/mnt/PlexPool";
         fsType = "nfs";
         options = [
           "x-systemd.automount"
@@ -31,11 +31,11 @@
       };
     };
   flake.modules.nixos.nfsK8sNfs =
-    { config, ... }:
+    { ... }:
     {
       imports = [ self.modules.nixos.nfsBase ];
       fileSystems."/mnt/k8s-nfs" = {
-        device = "${config.systemConstants.nasIP}:/mnt/AuxPool/K8S-NFS";
+        device = "${ewhs.const.nasIP}:/mnt/AuxPool/K8S-NFS";
         fsType = "nfs";
         options = [
           "x-systemd.automount"
@@ -44,11 +44,11 @@
       };
     };
   flake.modules.nixos.nfsPhotos =
-    { config, ... }:
+    { ... }:
     {
       imports = [ self.modules.nixos.nfsBase ];
       fileSystems."/mnt/photos" = {
-        device = "${config.systemConstants.nasIP}:/mnt/AuxPool/photos";
+        device = "${ewhs.const.nasIP}:/mnt/AuxPool/photos";
         fsType = "nfs";
         options = [
           "x-systemd.automount"

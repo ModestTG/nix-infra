@@ -1,9 +1,8 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-navidrome =
     {
       config,
-      homeLab,
       lib,
       pkgs-unstable,
       ...
@@ -23,7 +22,7 @@
       };
       users.users.navidrome.extraGroups = [ "users" ];
       systemd.services.navidrome.serviceConfig.MemoryDenyWriteExecute = lib.mkForce false;
-      services.nginx.virtualHosts."navidrome.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."navidrome.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.navidrome.settings.Port;
       };
       services.restic.backups.navidrome = {

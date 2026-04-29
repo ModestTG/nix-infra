@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-searxng =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       age.secrets.searxng-secret-key.file = builtins.toPath "${self.outPath}/secrets/searxng-secret-key.age";
       services.searx = {
@@ -81,7 +81,7 @@
           };
         };
       };
-      services.nginx.virtualHosts."search.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."search.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.searx.settings.server.port;
       };
     };

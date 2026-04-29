@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-paperless-ngx =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
 
     {
       age.secrets.paperless-ngx-admin-password = {
@@ -20,7 +20,7 @@
           PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ correspondent }}/{{ title }}";
         };
       };
-      services.nginx.virtualHosts."docs.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."docs.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.paperless.port;
       };
       services.restic.backups.paperless-ngx = {

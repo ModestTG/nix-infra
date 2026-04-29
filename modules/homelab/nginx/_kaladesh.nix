@@ -1,5 +1,5 @@
-self:
-{ config, homeLab, pkgs-unstable, ... }:
+self: ewhs:
+{ config, pkgs-unstable, ... }:
 {
   imports = [ (import ./_base.nix self { inherit config pkgs-unstable; }) ];
   services.nginx.virtualHosts = {
@@ -11,7 +11,7 @@ self:
         return = 404;
       };
     };
-    "unifi.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+    "unifi.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
       scheme = "https";
       host = "10.0.0.19";
       port = 443;

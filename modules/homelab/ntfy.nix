@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-ntfy =
-    { config, homeLab, lib, pkgs-unstable, ... }:
+    { config, lib, pkgs-unstable, ... }:
 
     {
       age.secrets.ntfy-settings = {
@@ -27,6 +27,6 @@
         let
           ntfyPort = lib.strings.removePrefix ":" config.services.ntfy-sh.settings.listen-http;
         in
-        homeLab.mkProxyVirtualHost { port = ntfyPort; };
+        ewhs.lib.mkProxyVirtualHost { port = ntfyPort; };
     };
 }

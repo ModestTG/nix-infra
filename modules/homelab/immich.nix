@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-immich =
-    { config, homeLab, ... }:
+    { config, ... }:
     {
       system.activationScripts.immich-postgresql-dir =
         #bash
@@ -11,7 +11,7 @@
             chmod eweishaar:users /var/lib/immich-postgresql
           fi
         '';
-      services.nginx.virtualHosts."photos.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."photos.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 2283;
         extraConfig = ''
           client_max_body_size 1000M;

@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-radarr =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.radarr = {
         enable = true;
@@ -14,7 +14,7 @@
           };
         };
       };
-      services.nginx.virtualHosts."radarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."radarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.radarr.settings.server.port;
       };
       services.restic.backups.radarr = {

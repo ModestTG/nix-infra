@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ewhs, self, ... }:
 {
   flake.modules.nixos.users-eweishaar =
     {
@@ -18,7 +18,7 @@
         ];
         uid = 1000;
         shell = pkgs.bashInteractive;
-        openssh.authorizedKeys.keys = [ config.systemConstants.eweishaarPublicSshKey ];
+        openssh.authorizedKeys.keys = [ ewhs.const.eweishaarSshPublicKey ];
       };
       security.sudo = lib.mkIf config.security.sudo.enable {
         keepTerminfo = true;

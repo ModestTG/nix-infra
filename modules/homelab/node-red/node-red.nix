@@ -1,8 +1,8 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 
 {
   flake.modules.nixos.homelab-node-red =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.node-red = {
         enable = true;
@@ -10,7 +10,7 @@
         withNpmAndGcc = true;
         configFile = ./settings.js;
       };
-      services.nginx.virtualHosts."node-red.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."node-red.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.node-red.port;
         websockets = false;
       };

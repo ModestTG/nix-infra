@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-sabnzbd =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.sabnzbd = {
         enable = true;
@@ -9,7 +9,7 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8081;
       };
       services.restic.backups.sabnzbd = {

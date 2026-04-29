@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-vaultwarden =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
 
     {
       age.secrets.vaultwarden-admin-token = {
@@ -24,7 +24,7 @@
         };
         environmentFile = config.age.secrets.vaultwarden-admin-token.path;
       };
-      services.nginx.virtualHosts."vault.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."vault.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.vaultwarden.config.ROCKET_PORT;
       };
     };

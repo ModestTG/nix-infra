@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-mealie =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.mealie = {
         enable = true;
@@ -10,7 +10,7 @@
           BASE_URL = "recipes.ewhomelab.com";
         };
       };
-      services.nginx.virtualHosts."recipes.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."recipes.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.mealie.port;
       };
       services.restic.backups.mealie = {

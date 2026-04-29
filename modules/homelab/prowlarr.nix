@@ -1,13 +1,13 @@
-{ ... }:
+{ ewhs, ... }:
 {
   flake.modules.nixos.homelab-prowlarr =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.prowlarr = {
         enable = true;
         package = pkgs-unstable.prowlarr;
       };
-      services.nginx.virtualHosts."prowlarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."prowlarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.prowlarr.settings.server.port;
       };
     };

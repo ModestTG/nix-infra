@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-gatus =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
 
     {
       age.secrets.gatus-ntfy-token.file = builtins.toPath "${self.outPath}/secrets/gatus-ntfy-token.age";
@@ -13,7 +13,7 @@
           web.port = 8083;
         };
       };
-      services.nginx.virtualHosts."gatus.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."gatus.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.gatus.settings.web.port;
       };
     };

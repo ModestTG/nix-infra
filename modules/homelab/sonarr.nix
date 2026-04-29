@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-sonarr =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.sonarr = {
         enable = true;
@@ -9,7 +9,7 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."sonarr.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."sonarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.sonarr.settings.server.port;
       };
       services.restic.backups.sonarr = {

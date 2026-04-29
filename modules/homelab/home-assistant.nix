@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-home-assistant =
-    { config, homeLab, ... }:
+    { config, ... }:
     {
       virtualisation.oci-containers.containers.home-assistant = {
         hostname = "home-assistant";
@@ -12,7 +12,7 @@
         ];
         extraOptions = [ "--network=host" ];
       };
-      services.nginx.virtualHosts."hass.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."hass.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8123;
       };
       services.restic.backups.home-assistant = {

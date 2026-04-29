@@ -1,11 +1,11 @@
-{ ... }:
+{ ewhs, ... }:
 {
   flake.modules.homeManager.bash =
-    { osConfig, ... }:
+    { ... }:
     {
       programs.bash = {
         enable = true;
-        shellAliases = osConfig.systemConstants.shellAliases;
+        shellAliases = ewhs.const.shellAliases;
       };
     };
 }

@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-jellyfin =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.jellyfin = {
         enable = true;
@@ -9,7 +9,7 @@
         user = "eweishaar";
         group = "users";
       };
-      services.nginx.virtualHosts."jellyfin.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."jellyfin.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8096;
       };
       services.restic.backups.jellyfin = {

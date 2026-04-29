@@ -1,7 +1,7 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-radicale =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
 
     {
       age.secrets = {
@@ -28,7 +28,7 @@
           };
         };
       };
-      services.nginx.virtualHosts."radicale.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."radicale.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 5232;
       };
       services.restic.backups.radicale = {

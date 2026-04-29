@@ -3,14 +3,11 @@
   flake.modules.nixos.osBase =
     { lib, ... }:
     {
-      imports =
-        with self.modules.nixos;
-        [
-          basePackages
-          ntp
-          users-eweishaar
-        ]
-        ++ [ self.modules.generic.systemConstants self.modules.generic.homeLab ];
+      imports = with self.modules.nixos; [
+        basePackages
+        ntp
+        users-eweishaar
+      ];
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
       users.mutableUsers = false;

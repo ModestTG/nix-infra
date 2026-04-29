@@ -1,8 +1,8 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 
 {
   flake.modules.nixos.homelab-audiobookshelf =
-    { config, homeLab, pkgs-unstable, ... }:
+    { config, pkgs-unstable, ... }:
     {
       services.audiobookshelf = {
         enable = true;
@@ -12,7 +12,7 @@
         port = 8003;
         host = "0.0.0.0";
       };
-      services.nginx.virtualHosts."audiobookshelf.ewhomelab.com" = homeLab.mkProxyVirtualHost {
+      services.nginx.virtualHosts."audiobookshelf.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.audiobookshelf.port;
         extraConfig = ''
           client_max_body_size 5000M;
