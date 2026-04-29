@@ -1,4 +1,4 @@
-self:
+self: ewhs:
 { config, ... }:
 let
   inherit (import ./_common.nix)
@@ -71,7 +71,7 @@ in
         }
       ];
       locations."/" = {
-        proxyPass = "http://10.0.20.22:8008";
+        proxyPass = "http://${ewhs.const.kaladeshIP}:8008";
         proxyWebsockets = true;
         extraConfig = ''
           proxy_set_header X-Forwarded-For $remote_addr;

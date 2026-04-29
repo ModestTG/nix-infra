@@ -1,4 +1,9 @@
-{ self, inputs, ... }:
+{
+  ewhs,
+  inputs,
+  self,
+  ...
+}:
 {
   flake.modules.homeManager.ssh =
     { config, osConfig, ... }:
@@ -13,14 +18,15 @@
       };
       programs.ssh = {
         enable = true;
+        enableDefaultConfig = false;
         matchBlocks = {
           "kaladesh" = {
-            hostname = "10.0.20.22";
+            hostname = ewhs.const.kaladeshIP;
             user = "eweishaar";
             identitiesOnly = true;
           };
           "kaladesh-deploy" = {
-            hostname = "10.0.20.22";
+            hostname = ewhs.const.kaladeshIP;
             user = "deploy";
             identityFile = config.age.secrets.deploy-ssh-private-key.path;
             identitiesOnly = true;

@@ -54,7 +54,7 @@
             yamlls.enable = true;
             lua_ls = {
               enable = true;
-              settings = {
+              config = {
                 completion = {
                   callSnippet = "Replace";
                 };

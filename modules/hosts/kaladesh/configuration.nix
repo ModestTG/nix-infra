@@ -2,10 +2,6 @@
 {
   flake.modules.nixos.kaladeshConfiguration =
     {
-      config,
-      inputs,
-      lib,
-      pkgs,
       ...
     }:
     {
