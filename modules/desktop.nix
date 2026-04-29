@@ -52,7 +52,7 @@
           enable = true;
           clean = {
             enable = true;
-            extraArgs = "--keep-since 10d --keep 20";
+            extraArgs = "--keep-since 10d --keep 5";
           };
         };
         yubikey-manager.enable = true;
@@ -129,10 +129,8 @@
         };
         settings = {
           General = {
-            useGrimAdapter = true;
             showStartupLaunchMessage = false;
             disabledTrayIcon = true;
-            disabledGrimWarning = true;
           };
         };
       };

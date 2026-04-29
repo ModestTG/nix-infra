@@ -31,7 +31,7 @@ rbd $HOST="": rebuild-pre
   nh os test -n -H "${HOST:-$(hostname)}" .
   
 clean:
-  nh clean all --keep-since 10d --keep 20
+  nh clean all --keep-since 10d --keep 5
 
 update:
   #!/usr/bin/env bash
