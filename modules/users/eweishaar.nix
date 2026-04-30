@@ -1,4 +1,9 @@
-{ ewhs, self, ... }:
+{
+  ewhs,
+  inputs,
+  self,
+  ...
+}:
 {
   flake.modules.nixos.users-eweishaar =
     {
@@ -42,7 +47,10 @@
     {
       imports = [ self.modules.nixos.homeManagerBase ];
       home-manager.users.eweishaar = {
-        imports = with self.modules.homeManager; [ hmBase ];
+        imports = [
+          self.modules.homeManager.hmBase
+          inputs.agenix.homeManagerModules.default
+        ];
         home = {
           username = "eweishaar";
           homeDirectory = "/home/eweishaar";

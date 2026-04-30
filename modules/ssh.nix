@@ -8,14 +8,15 @@
   flake.modules.homeManager.ssh =
     { config, osConfig, ... }:
     {
-      imports = [ inputs.agenix.homeManagerModules.default ];
       age = {
-        identityPaths = [ osConfig.age.secrets.eweishaar-ssh-private-key.path ];
+        # identityPaths = [ osConfig.age.secrets.eweishaar-ssh-private-key.path ];
         secrets = {
           vps-ssh.file = builtins.toPath "${self.outPath}/secrets/vps-ssh.age";
           deploy-ssh-private-key.file = builtins.toPath "${self.outPath}/secrets/deploy-ssh-private-key.age";
         };
       };
+      home.file.".ssh/id_ed25519".source =
+        config.lib.file.mkOutOfStoreSymlink osConfig.age.secrets.eweishaar-ssh-private-key.path;
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
