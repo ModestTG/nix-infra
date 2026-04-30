@@ -1,6 +1,7 @@
 rec {
   domain = "ewhomelab.com";
   matrixDomain = "matrix.${domain}";
+  adminDomain = "matrix-admin.${domain}";
   turnDomain = "turn.${domain}";
 
   # Shared nginx well-known locations for Matrix discovery

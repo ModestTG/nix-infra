@@ -14,6 +14,7 @@
         homelab-immich
         homelab-jellyfin
         homelab-matrix-synapse
+        homelab-matrix-synapse-admin
         homelab-mealie
         homelab-navidrome
         homelab-nginx-kaladesh
