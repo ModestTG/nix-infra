@@ -1,4 +1,4 @@
-{ self, ewhs, ... }:
+{ ewhs, ... }:
 {
   flake.modules.nixos.homelab-home-assistant =
     { config, ... }:
@@ -20,6 +20,12 @@
         paths = [ "/var/lib/home-assistant" ];
         passwordFile = config.age.secrets.restic-password.path;
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "home-assistant";
+          url = "https://hass.ewhomelab.com";
+        })
+      ];
       system.activationScripts.home-assistant-dir =
         #bash
         ''

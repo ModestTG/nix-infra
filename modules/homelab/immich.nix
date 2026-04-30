@@ -11,6 +11,12 @@
             chmod eweishaar:users /var/lib/immich-postgresql
           fi
         '';
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "immich";
+          url = "https://photos.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."photos.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 2283;
         extraConfig = ''

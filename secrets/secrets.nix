@@ -18,6 +18,7 @@ in
   "deploy-ssh-private-key.age".publicKeys = keyList;
   "eweishaar-ssh-private-key.age".publicKeys = keyList;
   "gatus-ntfy-token.age".publicKeys = keyList;
+  "gatus-matrix-token.age".publicKeys = keyList;
   "kaladesh-ssh-privateKey.age".publicKeys = keyList;
   "matrix-synapse-secrets.age".publicKeys = keyList;
   "ntfy-settings.age".publicKeys = keyList;

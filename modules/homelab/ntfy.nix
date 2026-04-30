@@ -23,6 +23,12 @@
           cache-duration = "8760h"; # one year
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "ntfy";
+          url = "https://ntfy.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."ntfy.ewhomelab.com" =
         let
           ntfyPort = lib.strings.removePrefix ":" config.services.ntfy-sh.settings.listen-http;

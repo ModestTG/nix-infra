@@ -22,6 +22,12 @@
       };
       users.users.navidrome.extraGroups = [ "users" ];
       systemd.services.navidrome.serviceConfig.MemoryDenyWriteExecute = lib.mkForce false;
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "navidrome";
+          url = "https://navidrome.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."navidrome.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.navidrome.settings.Port;
       };

@@ -24,6 +24,12 @@
         };
         environmentFile = config.age.secrets.vaultwarden-admin-token.path;
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "vaultwarden";
+          url = "https://vault.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."vault.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.vaultwarden.config.ROCKET_PORT;
       };

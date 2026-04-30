@@ -28,6 +28,16 @@
           };
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "radicale";
+          url = "https://radicale.ewhomelab.com";
+          conditions = [
+            "[STATUS] < 500"
+            "[RESPONSE_TIME] < 300"
+          ];
+        })
+      ];
       services.nginx.virtualHosts."radicale.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 5232;
       };

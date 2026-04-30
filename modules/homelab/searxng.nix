@@ -81,6 +81,12 @@
           };
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "searxng";
+          url = "https://search.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."search.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.searx.settings.server.port;
       };

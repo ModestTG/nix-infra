@@ -9,6 +9,12 @@
         user = "eweishaar";
         group = "users";
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "sonarr";
+          url = "https://sonarr.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."sonarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.sonarr.settings.server.port;
       };

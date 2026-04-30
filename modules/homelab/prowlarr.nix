@@ -7,6 +7,12 @@
         enable = true;
         package = pkgs-unstable.prowlarr;
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "prowlarr";
+          url = "https://prowlarr.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."prowlarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.prowlarr.settings.server.port;
       };

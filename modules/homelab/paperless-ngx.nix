@@ -20,6 +20,12 @@
           PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ correspondent }}/{{ title }}";
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "paperless-ngx";
+          url = "https://docs.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."docs.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.paperless.port;
       };

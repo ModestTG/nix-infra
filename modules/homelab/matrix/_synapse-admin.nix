@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+ewhs: { pkgs, ... }:
 let
   inherit (import ./_common.nix)
     domain
@@ -6,6 +6,12 @@ let
     ;
 in
 {
+  services.gatus.settings.endpoints = [
+    (ewhs.lib.mkGatusEndpoint {
+      name = "matrix-synapse-admin";
+      url = "https://${adminDomain}";
+    })
+  ];
   services.nginx.virtualHosts."${adminDomain}" = {
     useACMEHost = domain;
     forceSSL = true;

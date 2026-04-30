@@ -1,4 +1,4 @@
-self:
+self: ewhs:
 { config, ... }:
 let
   inherit (import ./_common.nix)
@@ -77,6 +77,13 @@ in
       trusted_key_servers = [ { server_name = "matrix.org"; } ];
     };
   };
+
+  services.gatus.settings.endpoints = [
+    (ewhs.lib.mkGatusEndpoint {
+      name = "matrix-synapse";
+      url = "https://matrix.ewhomelab.com/_matrix/client/versions";
+    })
+  ];
 
   systemd.services.matrix-synapse = {
     wants = [ "postgresql.service" ];

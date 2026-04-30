@@ -9,6 +9,12 @@
         user = "eweishaar";
         group = "users";
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "jellyfin";
+          url = "https://jellyfin.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."jellyfin.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8096;
       };

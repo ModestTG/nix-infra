@@ -37,6 +37,35 @@ rec {
         inherit paths passwordFile pruneOpts;
         initialize = true;
       };
+    mkGatusEndpoint =
+      {
+        name,
+        url,
+        interval ? "1m",
+        group ? "homelab",
+        conditions ? [
+          "[STATUS] == 200"
+          "[RESPONSE_TIME] < 300"
+        ],
+      }:
+      {
+        inherit
+          conditions
+          group
+          interval
+          name
+          url
+          ;
+        alerts = [
+          {
+            type = "matrix";
+            enabled = true;
+            failure-threshold = 3;
+            success-threshold = 2;
+            send-on-resolved = true;
+          }
+        ];
+      };
     mkProxyVirtualHost =
       {
         port,

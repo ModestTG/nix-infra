@@ -10,6 +10,12 @@
           BASE_URL = "recipes.ewhomelab.com";
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "mealie";
+          url = "https://recipes.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."recipes.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.mealie.port;
       };

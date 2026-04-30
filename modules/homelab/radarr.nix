@@ -14,6 +14,12 @@
           };
         };
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "radarr";
+          url = "https://radarr.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."radarr.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.radarr.settings.server.port;
       };

@@ -10,6 +10,12 @@
         withNpmAndGcc = true;
         configFile = ./settings.js;
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "node-red";
+          url = "https://node-red.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."node-red.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = config.services.node-red.port;
         websockets = false;

@@ -24,15 +24,10 @@
         passwordFile = config.age.secrets.restic-password.path;
       };
       services.gatus.settings.endpoints = [
-        {
+        (ewhs.lib.mkGatusEndpoint {
           name = "audiobookshelf";
           url = "https://audiobookshelf.ewhomelab.com";
-          interval = "1m";
-          conditions = [
-            "[STATUS] == 200"
-            "[RESPONSE_TIME] < 300"
-          ];
-        }
+        })
       ];
     };
 }

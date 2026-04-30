@@ -9,6 +9,12 @@
         user = "eweishaar";
         group = "users";
       };
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "sabnzbd";
+          url = "https://sabnzbd.ewhomelab.com";
+        })
+      ];
       services.nginx.virtualHosts."sabnzbd.ewhomelab.com" = ewhs.lib.mkProxyVirtualHost {
         port = 8081;
       };

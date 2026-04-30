@@ -1,8 +1,14 @@
-{ self, ... }:
+{ self, ewhs, ... }:
 {
   flake.modules.nixos.homelab-traefik =
     { config, pkgs-unstable, ... }:
     {
+      services.gatus.settings.endpoints = [
+        (ewhs.lib.mkGatusEndpoint {
+          name = "traefik";
+          url = "https://traefik-int.ewhomelab.com";
+        })
+      ];
       services.traefik = {
         enable = true;
         package = pkgs-unstable.traefik;
